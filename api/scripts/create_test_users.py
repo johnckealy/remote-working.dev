@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from utils import L, LOG
 import os
 
+User = get_user_model()
 
 def run():
     """Script to create two test users, one for John and one for Admin."""
