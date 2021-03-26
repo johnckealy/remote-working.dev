@@ -7,12 +7,11 @@
       ><span class="text-h6 q-mx-sm">Logout</span></q-btn
     >
 
-    Logged in as {{ authUser ? authUser.first_name : "Anonymous" }}
+    {{ authUser ? authUser.first_name : "" }}
 
     <q-space />
 
-    <q-btn class="q-ma-xs" to="/" label="Home" color="black" />
-    <q-btn class="q-ma-xs" to="/dashboard" label="Dashboard" color="black" />
+    <q-btn class="q-ma-xs" to="/" flat icon="home"  color="" />
   </q-toolbar>
 </template>
 

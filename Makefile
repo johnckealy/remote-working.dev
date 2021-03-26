@@ -51,7 +51,7 @@ frontend-prod-serve: env-prod
 
 run-django-scripts: env-dev
 	@$(IN_ENV) && python $(DJANGO_MANAGE) runscript create_test_users
-	@$(IN_ENV) && python $(DJANGO_MANAGE) runscript api_crawler
+	@$(IN_ENV) && python $(DJANGO_MANAGE) runscript collect_jobs
 
 migrations: env-dev
 	$(IN_ENV) && python $(DJANGO_MANAGE) makemigrations --noinput

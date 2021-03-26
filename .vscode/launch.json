@@ -35,7 +35,7 @@
             "envFile": "${workspaceFolder}/env/.env.dev",
             "program": "${workspaceFolder}/api/manage.py",
             "args": [
-                "runscript", "api_crawler"
+                "runscript", "collect_jobs"
             ],
             "django": true,
         },

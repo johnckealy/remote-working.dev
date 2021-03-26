@@ -85,9 +85,9 @@
       >
     </div>
 
-    <strong class="q-ma-lg">{{ filteredJobs.length }} jobs</strong>
+    <strong v-if="resultsPerPageDisplay" class="q-ma-lg">Showing {{ resultsPerPageDisplay }} of {{ totalFilteredJobs }} jobs</strong>
 
-    <q-spinner-bars class="q-mx-auto" size="100px" v-if="loading" color="primary" />
+    <q-spinner-dots class="q-mx-auto" size="100px" v-if="loading" color="primary" />
 
     <q-card v-else class="q-pa-md q-ma-xs" v-for="(job, i) of filteredJobs" :key="i">
       <div class="row items-center justify-between">
@@ -116,6 +116,13 @@
         </div>
       </div>
     </q-card>
+
+    <q-btn color="primary" glossy class="q-mx-xs q-my-lg" @click="moreResults">More Results</q-btn>
+
+    <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
+      <q-btn fab icon="keyboard_arrow_up" color="primary" />
+    </q-page-scroller>
+    <div class="q-ma-lg q-pa-lg"></div>
   </q-page>
 </template>
 
@@ -128,13 +135,17 @@ export default {
     ignoreChips: [],
     includeChip: "",
     ignoreChip: "",
-    loading: false
+    loading: false,
+    currentPage: 1,
+    maxPages: 0,
+    totalFilteredJobs: null,
+    resultsPerPage: 40
   }),
   async mounted() {
     this.loading = true;
     try {
       await this.$auth.checkTokens();
-      this.retrieveFilters()
+      await this.retrieveFilters()
     }
     catch {
       console.log('There was an issue mounting the page.')
@@ -160,6 +171,11 @@ export default {
           return !job.role.toLowerCase().includes(chip.toLowerCase());
         });
       });
+      this.totalFilteredJobs =  this.filteredJobs.length
+      const startIndex = (this.currentPage - 1) * this.resultsPerPage
+      const endIndex =  (this.currentPage - 1) * this.resultsPerPage + this.resultsPerPage
+      this.maxPages = parseInt(this.filteredJobs.length / this.resultsPerPage)+1;
+      this.filteredJobs = this.filteredJobs.slice(startIndex, endIndex)
     },
     submitIncludeChip() {
       if (this.includeChip) {
@@ -207,21 +223,18 @@ export default {
       }
     },
     async retrieveFilters() {
-      if (this.$auth.user()) {
-        try {
-          const response = await this.$auth.axios({ url: '/profile/', method: 'GET' })
-          console.log(response)
-          this.includeChips = response.data.include_chips
-          this.ignoreChips = response.data.ignore_chips
-        }
-        catch {
-          this.$q.notify({
-            message: "There was a problem retrieving your filters",
-            color: "red-6",
-            icon: "error",
-          });
-        }
+      try {
+        const response = await this.$auth.axios({ url: '/profile/', method: 'GET' })
+        this.includeChips = response.data.include_chips
+        this.ignoreChips = response.data.ignore_chips
       }
+      catch {
+        console.log('There was a problem retrieving the saved filters. Are you logged in?')
+      }
+    },
+    moreResults() {
+      this.resultsPerPage += this.resultsPerPage
+      this.filter();
     }
   },
   computed: {
@@ -231,6 +244,9 @@ export default {
         return user.first_name;
       }
     },
+    resultsPerPageDisplay() {
+      return this.totalFilteredJobs <= this.resultsPerPage ? this.totalFilteredJobs : this.resultsPerPage
+    }
   },
 };
 </script>

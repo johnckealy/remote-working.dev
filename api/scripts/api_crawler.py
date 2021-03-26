@@ -1,11 +1,9 @@
 import requests
 from jobs.models import Job
-from datetime import datetime
 from dateutil.parser import parse
 
 
 def remoteimpact():
-    Job.objects.all().delete()
     page = requests.get('https://remoteimpact-api.vercel.app/api?page=1&limit=100')
     jobs = page.json()
     for job in jobs:
@@ -21,5 +19,5 @@ def remoteimpact():
 
 
 
-def run():
+def crawler():
     remoteimpact()

@@ -20,9 +20,13 @@ class ProfileDetail(generics.GenericAPIView):
 
     def post(self, request, format=None):
 
-        profile = Profile.objects.update_or_create(
-            user = request.user,
-            include_chips = request.data['includeChips'],
-            ignore_chips = request.data['ignoreChips'],
-        )
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except:
+            profile = Profile.objects.create(user=request.user)
+        else:
+            profile.include_chips = request.data['includeChips']
+            profile.ignore_chips = request.data['ignoreChips']
+            profile.save()
+
         return Response(ProfileSerializer(profile).data)

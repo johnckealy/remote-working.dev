@@ -3,8 +3,9 @@ from django.contrib.postgres.fields import ArrayField
 from datetime import datetime
 from dateutil.parser import parse
 
+
 class Job(models.Model):
-    direct_link = models.CharField(null=True, max_length=300)
+    direct_link = models.CharField(null=True, max_length=900)
     jobsite_link = models.CharField(null=True, max_length=300)
     jobsite = models.CharField(null=True, max_length=300)
     date = models.DateTimeField(null=True)
