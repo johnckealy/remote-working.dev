@@ -6,11 +6,11 @@
     local_certs
 }
 
+www.${ORIGIN_DOMAIN} {
+    redir https://${ORIGIN_DOMAIN}{url} permanent
+}
 ${ORIGIN_DOMAIN} {
     reverse_proxy quasar:3100
-}
-www.${ORIGIN_DOMAIN} {
-    redir https://${ORIGIN_DOMAIN}{uri} permanent
 }
 
 

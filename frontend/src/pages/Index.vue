@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex column container">
-    <h1 class="text-h4 q-ma-lg">Remote Jobs</h1>
+    <h1 class="text-h4 q-ma-lg">Remote Working – A remote jobs aggregator for developers</h1>
 
     <div class="row">
       <q-form

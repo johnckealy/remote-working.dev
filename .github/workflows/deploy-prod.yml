@@ -1,9 +1,9 @@
-name: deploy-prod
+name: deploy
 
 on:
   push:
     branches:
-      - none
+      - main
 
 
 jobs:
@@ -31,14 +31,14 @@ jobs:
         key: ${{ secrets.SSHKEY }}
         port: ${{ secrets.PORT }}
         source: "./*"
-        target: "./quasar-django-templates"
+        target: "./remotejobs"
 
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-    - name: Deploy Flora
+    - name: Deploy Remote Working
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -46,5 +46,5 @@ jobs:
         key: ${{ secrets.SSHKEY }}
         port: ${{ secrets.PORT }}
         command_timeout: 200m
-        script:  cd quasar-django-templates/ && make deploy-prod
+        script:  cd remotejobs/ && make gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x  && make deploy
 
