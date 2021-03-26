@@ -78,7 +78,7 @@
       <q-space />
       <q-btn
         glossy
-        class="q-mx-auto"
+        class="q-mr-lg"
         color="primary"
         @click="saveFilters"
         >Save Filters</q-btn
@@ -87,13 +87,35 @@
 
     <strong class="q-ma-lg">{{ filteredJobs.length }} jobs</strong>
 
-    <q-spinner-bars size="100px" v-if="loading" color="primary" />
-    <div v-else v-for="(job, i) of filteredJobs" :key="i">
-      <div>
-        <span class="text-h5 job-header q-ma-lg"> <a target="_blank" :href="job.jobsite_link">{{ job.role }} </a></span>
-        <span>Linked from <a target="_blank" :href="job.jobsite_link"> {{ job.jobsite }} </a></span>
+    <q-spinner-bars class="q-mx-auto" size="100px" v-if="loading" color="primary" />
+
+    <q-card v-else class="q-pa-md q-ma-xs" v-for="(job, i) of filteredJobs" :key="i">
+      <div class="row items-center justify-between">
+        <div class="col-12 col-md-4">
+        <div class="">
+          <span class="row text-h6 job-header"> <a target="_blank" :href="job.direct_link">{{ job.role }} </a></span>
+          <span class="row text-subtitle1">{{ job.company }}</span>
+        </div>
+        </div>
+        <div class="q-pr-lg col-12 col-md-4">
+          <q-icon color="primary" size="17px" class="q-mx-xs" name="event" /> <span> {{ job.datef }}</span>
+          <span class="row text-body2"><a target="_blank" :href="job.jobsite_link"> {{ job.jobsite }} </a></span>
+        </div>
+        <div class="col-12 col-md-4">
+          <q-chip
+            v-for="(chip, index) in job.tags"
+            :key="'c'+index"
+            class="q-pa-md"
+            size="15px"
+            @remove="removeIgnoreChip(ignoreIndex)"
+            color="green-9"
+            text-color="white"
+          >
+          {{ chip }}
+        </q-chip>
+        </div>
       </div>
-    </div>
+    </q-card>
   </q-page>
 </template>
 
@@ -110,9 +132,14 @@ export default {
   }),
   async mounted() {
     this.loading = true;
-    await this.$auth.checkTokens();
+    try {
+      await this.$auth.checkTokens();
+      this.retrieveFilters()
+    }
+    catch {
+      console.log('There was an issue mounting the page.')
+    }
     await this.getJobs();
-    this.retrieveFilters()
     this.loading = false;
   },
   methods: {
@@ -162,7 +189,7 @@ export default {
     async saveFilters() {
       if (!this.$auth.user()) {
         this.$router.push('/login')
-        return 
+        return
       }
       try {
         await this.$auth.axios({ url: '/profile/', data: {
@@ -209,8 +236,12 @@ export default {
 </script>
 
 
-<style>
-  .job-header{
+<style lang="scss" scoped>
+
+  a {
     color: black;
+    &:hover {
+      color: rgb(75, 75, 75);
+    }
   }
 </style>

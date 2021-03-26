@@ -7,6 +7,6 @@ from .models import Job
 
 
 class JobsIndex(generics.ListCreateAPIView):
-    queryset = Job.objects.all()
+    queryset = Job.objects.all().order_by('-date')
     serializer_class = JobSerializer
     permission_classes = (AllowAny,)
