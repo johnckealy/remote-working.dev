@@ -27,13 +27,13 @@ services:
         env_file:
             - ${ROOT_FOLDER}/env/.env.${ENVIRONMENT}
         depends_on:
-            - db
+            - db-rw
         networks:
             - ${DOCKER_NETWORK_NAME}
 
 
     # Django database
-    db:
+    db-rw:
         restart: always
         image: postgres:12.0-alpine
         volumes:
