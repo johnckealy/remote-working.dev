@@ -101,9 +101,7 @@ export default {
       });
       if (resp.status == 201) {
         this.$q.notify({ message: "Account created successfully" });
-        this.$route.path == this.$store.state.authenticator.redirectUrl
-          ? this.$router.go()
-          : this.$router.push(this.$store.state.authenticator.redirectUrl);
+        this.$router.go('/login')
       } else {
         console.log('resp', resp)
         this.$q.notify({

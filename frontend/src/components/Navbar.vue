@@ -1,8 +1,11 @@
 <template>
   <q-toolbar>
-    <q-avatar>
-      <img src="~assets/logo-white.svg" />
-    </q-avatar>
+    <router-link to="/">
+      <q-avatar @click="$router.push('/')">
+        <img src="~assets/logo-white.svg" />
+      </q-avatar>
+    </router-link>
+
     <span class="text-h6 q-mx-sm">{{ authUser ? authUser.first_name : "" }}</span>
     <q-space />
     <q-btn v-if="!authUser" to="/login" icon="person" class="q-ma-md" no-caps flat dense>
