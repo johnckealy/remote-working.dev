@@ -11,47 +11,31 @@
   <q-page class="flex column container">
 
     <div class="q-mt-lg row">
-      <q-form
-        class="col-md-6 col-12 q-pa-sm"
-        @submit.prevent="submitIncludeChip"
-      >
-        <span class="text-subtitle1">Only include roles that mention...</span>
-        <q-input
-          outlined
-          bottom-slots
-          v-model="includeChip"
-          placeholder="Junior, Java, etc.."
-        >
-          <q-btn
-            class="q-px-sm p-ma-none"
-            type="submit"
-            round
-            dense
-            flat
-            icon="add"
-          />
+      <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIncludeChip">
+        <span class="text-subtitle1">Only show role titles that include...</span>
+        <q-input outlined bottom-slots v-model="includeChip" placeholder="Junior, Java, etc.." >
+          <q-btn class="q-px-sm p-ma-none" type="submit" round dense flat icon="add" />
         </q-input>
       </q-form>
 
-      <q-form
-        class="col-md-6 col-12 q-pa-sm"
-        @submit.prevent="submitIgnoreChip"
-      >
-        <span class="text-subtitle1">Ignore roles that mention...</span>
-        <q-input
-          outlined
-          bottom-slots
-          v-model="ignoreChip"
-          placeholder="Senior, .NET, etc.."
-        >
-          <q-btn
-            class="q-px-sm p-ma-none"
-            type="submit"
-            round
-            dense
-            flat
-            icon="add"
-          />
+      <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIgnoreChip" >
+        <span class="text-subtitle1">Ignore roles titles that mention...</span>
+        <q-input outlined bottom-slots v-model="ignoreChip" placeholder="Senior, .NET, etc..">
+          <q-btn class="q-px-sm p-ma-none" type="submit" round dense flat icon="add" />
+        </q-input>
+      </q-form>
+
+      <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIncludeTagChip" >
+        <span class="text-subtitle1">Only include tags matching...</span>
+        <q-input outlined bottom-slots v-model="includeTagChip" placeholder="python, aws, etc..">
+          <q-btn class="q-px-sm p-ma-none" type="submit" round dense flat icon="add" />
+        </q-input>
+      </q-form>
+
+      <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIgnoreTagChip" >
+        <span class="text-subtitle1">Ignore tags matching...</span>
+        <q-input outlined bottom-slots v-model="ignoreTagChip" placeholder="devops, rust, etc..">
+          <q-btn class="q-px-sm p-ma-none" type="submit" round dense flat icon="add" />
         </q-input>
       </q-form>
     </div>
@@ -74,6 +58,28 @@
         class="q-pa-md"
         @remove="removeIgnoreChip(ignoreIndex)"
         color="negative"
+        text-color="white"
+        removable
+      >
+        {{ chip }}
+      </q-chip>
+      <q-chip
+        v-for="(chip, includeTagIndex) in includeTagChips"
+        :key="'c' + includeTagIndex"
+        class="q-pa-md"
+        @remove="removeIncludeTagChip(includeTagIndex)"
+        color="green"
+        text-color="white"
+        removable
+      >
+        {{ chip }}
+      </q-chip>
+      <q-chip
+        v-for="(chip, ignoreTagIndex) in ignoreTagChips"
+        :key="'d' + ignoreTagIndex"
+        class="q-pa-md"
+        @remove="removeIgnoreTagChip(ignoreTagIndex)"
+        color="orange"
         text-color="white"
         removable
       >
@@ -141,8 +147,12 @@ export default {
     filteredJobs: [],
     includeChips: [],
     ignoreChips: [],
+    includeTagChips: [],
+    ignoreTagChips: [],
     includeChip: "",
     ignoreChip: "",
+    includeTagChip: "",
+    ignoreTagChip: "",
     loading: false,
     currentPage: 1,
     maxPages: 0,
@@ -165,7 +175,7 @@ export default {
     async getJobs() {
       const jobList = await this.$auth.axios({ url: "jobs" });
       this.jobs = jobList.data;
-      this.filter();
+      this.filter()
     },
     filter() {
       this.filteredJobs = JSON.parse(JSON.stringify(this.jobs));
@@ -177,6 +187,16 @@ export default {
       this.ignoreChips.forEach((chip) => {
         this.filteredJobs = this.filteredJobs.filter((job) => {
           return !job.role.toLowerCase().includes(chip.toLowerCase());
+        });
+      });
+      this.includeTagChips.forEach((chip) => {
+        this.filteredJobs = this.filteredJobs.filter((job) => {
+          return job.tags.includes(chip.toLowerCase());
+        });
+      });
+      this.ignoreTagChips.forEach((chip) => {
+        this.filteredJobs = this.filteredJobs.filter((job) => {
+          return !job.tags.includes(chip.toLowerCase());
         });
       });
       this.totalFilteredJobs =  this.filteredJobs.length
@@ -202,12 +222,34 @@ export default {
       this.ignoreChip = "";
       this.filter();
     },
+    submitIncludeTagChip() {
+      if (this.includeTagChip) {
+        this.includeTagChips = [...this.includeTagChips, ...this.includeTagChip.split(",")];
+      }
+      this.includeTagChip = "";
+      this.filter();
+    },
+    submitIgnoreTagChip() {
+      if (this.ignoreTagChip) {
+        this.ignoreTagChips = [...this.ignoreTagChips, ...this.ignoreTagChip.split(",")];
+      }
+      this.ignoreTagChip = "";
+      this.filter();
+    },
     removeIncludeChip(chipIndex) {
       this.includeChips.splice(chipIndex, 1);
       this.filter();
     },
     removeIgnoreChip(chipIndex) {
       this.ignoreChips.splice(chipIndex, 1);
+      this.filter();
+    },
+    removeIncludeTagChip(chipIndex) {
+      this.includeTagChips.splice(chipIndex, 1);
+      this.filter();
+    },
+    removeIgnoreTagChip(chipIndex) {
+      this.ignoreTagChips.splice(chipIndex, 1);
       this.filter();
     },
     async saveFilters() {
