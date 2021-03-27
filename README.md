@@ -6,4 +6,4 @@
 
 A web application for collecting remote jobs across the web.
 
-You ca visit the application [here](https://remote-working.dev).
+You can visit the application [here](https://remote-working.dev).
