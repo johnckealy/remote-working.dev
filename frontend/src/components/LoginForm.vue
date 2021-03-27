@@ -3,7 +3,7 @@
     <q-card class="q-pa-lg">
       <q-toolbar class="q-pb-lg">
         <q-avatar>
-          <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+          <img src="~assets/logo.svg" />
         </q-avatar>
 
         <q-toolbar-title class="q-mx-sm"> Login </q-toolbar-title>
@@ -17,10 +17,10 @@
       <q-form @submit="onSubmit" class="q-gutter-md">
         <q-input
           v-model="username"
-          label="Username"
+          label="Email"
           lazy-rules="ondemand"
           :rules="[
-            (val) => (val && val.length > 0) || 'Please provide your username',
+            (val) => (val && val.length > 0) || 'Please provide your email',
           ]"
           outlined
         />
@@ -39,6 +39,8 @@
         <div class="text-body1 text-red" v-if="loginErrorMessage">
           There was a problem logging you in. Please check your details.
         </div>
+
+        <span class="text-body2 q-pa-md q-ma-md" >Don't have an account? Register <a href="/register">here.</a> </span>
 
         <div>
           <q-btn

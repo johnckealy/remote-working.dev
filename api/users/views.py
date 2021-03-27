@@ -18,6 +18,7 @@ class ProfileDetail(generics.GenericAPIView):
         except:
             return Response({"include_chips": [], "ignore_chips": []})
 
+
     def post(self, request, format=None):
 
         try:

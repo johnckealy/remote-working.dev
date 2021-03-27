@@ -1,8 +1,16 @@
 <template>
+<div>
+  <q-img height="300px" class="q-mb-lg" alt="Image of a landscape scene" src="~assets/tropical.jpg" >
+    <div class="absolute-full  flex flex-center">
+      <div>
+        <h1 class="text-h3 q-ma-lg">Remote Working</h1>
+        <h6 class="text-h6 q-ma-lg">A collection of remote jobs for developers</h6>
+      </div>
+    </div>
+  </q-img>
   <q-page class="flex column container">
-    <h1 class="text-h4 q-ma-lg">Remote Working – A remote jobs aggregator for developers</h1>
 
-    <div class="row">
+    <div class="q-mt-lg row">
       <q-form
         class="col-md-6 col-12 q-pa-sm"
         @submit.prevent="submitIncludeChip"
@@ -73,7 +81,6 @@
       </q-chip>
     </div>
 
-
     <div class="row">
       <q-space />
       <q-btn
@@ -124,6 +131,7 @@
     </q-page-scroller>
     <div class="q-ma-lg q-pa-lg"></div>
   </q-page>
+  </div>
 </template>
 
 <script>

@@ -1,17 +1,16 @@
 <template>
   <q-toolbar>
+    <q-avatar>
+      <img src="~assets/logo-white.svg" />
+    </q-avatar>
+    <span class="text-h6 q-mx-sm">{{ authUser ? authUser.first_name : "" }}</span>
+    <q-space />
     <q-btn v-if="!authUser" to="/login" icon="person" class="q-ma-md" no-caps flat dense>
       <span class="text-h6 q-mx-sm">Login</span>
     </q-btn>
     <q-btn v-else @click="logout" icon="logout" class="q-ma-md" no-caps flat dense
-      ><span class="text-h6 q-mx-sm">Logout</span></q-btn
-    >
-
-    {{ authUser ? authUser.first_name : "" }}
-
-    <q-space />
-
-    <q-btn class="q-ma-xs" to="/" flat icon="home"  color="" />
+      ><span class="text-h6 q-mx-sm">Logout</span>
+    </q-btn>
   </q-toolbar>
 </template>
 
