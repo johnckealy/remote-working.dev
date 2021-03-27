@@ -4,7 +4,7 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: node:10.18-jessie
+    container: python:3.8-slim
 
     services:
       postgres:
@@ -16,12 +16,12 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 1
       - name: Run tests
-        run:  apt-get update && apt-get install python-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
-
-
+        run:  apt-get update -y && apt-get install gnupg build-essential python-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test-in-docker

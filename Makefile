@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-PYTHON=python3.8
+PYTHON=python3
 DJANGO_MANAGE=api/manage.py
 ENV_DIR=.$(PYTHON)_env
 IN_ENV=. $(ENV_DIR)/bin/activate
@@ -64,7 +64,14 @@ flush-the-database-yes-really: env-dev
 	$(IN_ENV) && python $(DJANGO_MANAGE) flush
 
 test: env-dev build-python
-	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings  && $(PYTHON) -m pytest api/tests/
+	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings && $(PYTHON) -m pytest api/tests/
+
+test-in-docker: env-dev build-python
+	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings && \
+	             export SQL_HOST=postgres && \
+				 export SQL_USER=postgres && \
+				 export SQL_PASSWORD=postgres && \
+				 $(PYTHON) -m pytest api/tests/
 
 encrypt-dotenv:
 	tar -c env/ | gpg --symmetric -c -o env.tar.gpg
