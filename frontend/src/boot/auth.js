@@ -12,7 +12,7 @@ export default ({ app, router, store, Vue }) => {
       tokenRefreshEndpoint: '/token/refresh/',
       userEndpoint: '/user/',
       loginRoute: '/login',
-      registerEndpoint: '/register/'
+      registrationEndpoint: '/register/'
     }
 
     Vue.use(Auth, { router, store, config  });
