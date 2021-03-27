@@ -3,19 +3,10 @@ name: deploy
 on:
   push:
     branches:
-      - main
+      - sdf
 
 
 jobs:
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-      - name: Run tests
-        run: sudo apt-get update -y && sudo apt-get install python3.8 -y &&  sudo apt-get install python3-virtualenv -y && make test
 
   build:
     name: Build

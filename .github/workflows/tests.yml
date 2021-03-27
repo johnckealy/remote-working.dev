@@ -1,19 +1,20 @@
-# name: test
+name: test
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
 
-# jobs:
+jobs:
 
-#   test:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@master
-#         with:
-#           fetch-depth: 1
-#       - name: Run tests
-#         run: sudo apt-get update -y && sudo apt-get install python3.8 -y &&  sudo apt-get install python3-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: Run tests
+        run: sudo apt-get update -y && sudo apt-get install python3.8 -y &&  sudo apt-get install python3-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
+
 

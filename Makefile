@@ -64,7 +64,7 @@ flush-the-database-yes-really: env-dev
 	$(IN_ENV) && python $(DJANGO_MANAGE) flush
 
 test: env-dev build-python
-	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings && export SQL_DATABASE=:memory: && $(PYTHON) -m pytest api/tests/
+	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings  && $(PYTHON) -m pytest api/tests/
 
 encrypt-dotenv:
 	tar -c env/ | gpg --symmetric -c -o env.tar.gpg
