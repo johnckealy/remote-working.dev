@@ -2,7 +2,7 @@ name: Run tests
 on: push
 
 jobs:
-  container-job:
+  test:
     runs-on: ubuntu-latest
     container: node:10.18-jessie
 
@@ -22,6 +22,6 @@ jobs:
         with:
           fetch-depth: 1
       - name: Run tests
-        run: apt-get install python3.8 -y && apt-get install python3-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
+        run:  apt-get install python3-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
 
 
