@@ -22,6 +22,6 @@ jobs:
         with:
           fetch-depth: 1
       - name: Run tests
-        run:  apt-get install python3-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
+        run:  apt-get update && apt-get install python-virtualenv -y && gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.ENV_ENCRYPTION_KEY }} env.tar.gpg | tar -x &&  make test
 
 

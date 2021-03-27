@@ -101,9 +101,8 @@ export default {
       });
       if (resp.status == 201) {
         this.$q.notify({ message: "Account created successfully" });
-        this.$router.go('/login')
+        this.$router.push('/login')
       } else {
-        console.log('resp', resp)
         this.$q.notify({
           message: "Registration failed!",
           color: "red-6",
