@@ -10,7 +10,9 @@
   </q-img>
   <q-page class="flex column container">
 
-    <div class="q-mt-lg row">
+
+    <q-slide-transition>
+    <div v-if="showFilters" class="q-mt-lg row">
       <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIncludeChip">
         <span class="text-subtitle1">Only show role titles that include...</span>
         <q-input outlined bottom-slots v-model="includeChip" placeholder="Junior, Java, etc.." >
@@ -26,19 +28,20 @@
       </q-form>
 
       <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIncludeTagChip" >
-        <span class="text-subtitle1">Only include tags matching...</span>
+        <span class="text-subtitle1">Only include roles that have the tags...</span>
         <q-input outlined bottom-slots v-model="includeTagChip" placeholder="python, aws, etc..">
           <q-btn class="q-px-sm p-ma-none" type="submit" round dense flat icon="add" />
         </q-input>
       </q-form>
 
       <q-form class="col-md-6 col-12 q-pa-sm" @submit.prevent="submitIgnoreTagChip" >
-        <span class="text-subtitle1">Ignore tags matching...</span>
+        <span class="text-subtitle1">Ignore roles that include the tags...</span>
         <q-input outlined bottom-slots v-model="ignoreTagChip" placeholder="devops, rust, etc..">
           <q-btn class="q-px-sm p-ma-none" type="submit" round dense flat icon="add" />
         </q-input>
       </q-form>
     </div>
+     </q-slide-transition>
 
     <div>
       <q-chip
@@ -90,12 +93,17 @@
     <div class="row">
       <q-space />
       <q-btn
+        v-if="showFilters"
         glossy
         class="q-mr-lg"
         color="primary"
         @click="saveFilters"
         >Save Filters</q-btn
       >
+    <q-btn  glossy color="secondary"
+      @click="showFilters=!showFilters"> {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
+    </q-btn>
+
     </div>
 
     <strong v-if="resultsPerPageDisplay" class="q-ma-lg">Showing {{ resultsPerPageDisplay }} of {{ totalFilteredJobs }} jobs</strong>
@@ -105,9 +113,12 @@
     <q-card v-else class="q-pa-md q-ma-xs" v-for="(job, i) of filteredJobs" :key="i">
       <div class="row items-center justify-between">
         <div class="col-12 col-md-4">
-        <div class="">
+        <div>
           <span class="row text-h6 job-header"> <a target="_blank" :href="job.direct_link">{{ job.role }} </a></span>
-          <span class="row text-subtitle1">{{ job.company }}</span>
+        <span class="row text-subtitle1">
+          <q-icon class="self-center q-ma-xs" color="primary" name="apartment"></q-icon>
+          {{ job.company }}
+          </span>
         </div>
         </div>
         <div class="q-pr-lg col-12 col-md-4">
@@ -157,7 +168,8 @@ export default {
     currentPage: 1,
     maxPages: 0,
     totalFilteredJobs: null,
-    resultsPerPage: 40
+    resultsPerPage: 40,
+    showFilters: true
   }),
   async mounted() {
     this.loading = true;
