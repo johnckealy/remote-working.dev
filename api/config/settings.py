@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'django_celery_beat',
+    'django_celery_results',
     'sslserver',
     'users',
     'jobs'
@@ -165,3 +167,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CORS_ALLOWED_ORIGINS = [os.environ.get('ORIGIN_URL')]
 CORS_ALLOW_CREDENTIALS = True
 
+
+CELERY_IMPORTS = (
+    'scripts.tasks'
+)

@@ -26,6 +26,9 @@ env-prod:
 env-sub: env-prod
 	@envsubst < "docker-compose.prod.yml" > "docker-compose.yml"
 
+celery: env-dev
+	$(IN_ENV) && cd api && celery -A config worker --beat -l info -S django
+
 deploy: env-prod env-sub build-prod-frontend
 	echo "Building ${ENVIRONMENT} Environment"
 	docker-compose up --build -d
@@ -60,8 +63,8 @@ migrations: env-dev
 flush-the-database-yes-really: env-dev
 	$(IN_ENV) && python $(DJANGO_MANAGE) flush
 
-test: env-dev
-	$(IN_ENV) && export SQL_DATABASE=:memory: && $(PYTHON) -m pytest api/tests/
+test: env-dev build-python
+	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings && export SQL_DATABASE=:memory: && $(PYTHON) -m pytest api/tests/
 
 encrypt-dotenv:
 	tar -c env/ | gpg --symmetric -c -o env.tar.gpg

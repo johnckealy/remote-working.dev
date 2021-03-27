@@ -15,4 +15,8 @@ pytest-django
 django-extensions
 django-sslserver
 beautifulsoup4
+celery==4.4.7
+redis
+django-celery-beat
+django-celery-results
 
