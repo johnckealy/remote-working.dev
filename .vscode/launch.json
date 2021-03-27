@@ -20,11 +20,10 @@
             "request": "launch",
             "module": "pytest",
             "args": [
-                "${workspaceFolder}/api/tests/"
+                "${workspaceFolder}/api/tests/test_users.py"
             ],
+            "envFile": "${workspaceFolder}/env/.env.dev",
             "env": {
-                "DJANGO_SETTINGS_MODULE": "api.config.settings",
-                "SQL_ENGINE": "django.db.backends.sqlite3",
                 "SQL_DATABASE": ":memory:",
             }
         },

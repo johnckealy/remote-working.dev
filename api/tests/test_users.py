@@ -9,13 +9,12 @@ class UserTests(APITestCase):
 
     def test_create_user(self):
         """Ensure we can create a new account object."""
-        url = '/dj-rest-auth/registration/'
+        url = '/register/'
         data = {
             'username': 'alice',
             'password1': 'secret12345678',
             'password2': 'secret12345678',
             'first_name': 'Alice',
-            'last_name': 'InChains',
             'email': 'alice@email.com',
         }
         response = self.client.post(url, data)
