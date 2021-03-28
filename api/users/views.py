@@ -16,7 +16,12 @@ class ProfileDetail(generics.GenericAPIView):
             profile_serializer = ProfileSerializer(user.profile)
             return Response(profile_serializer.data)
         except:
-            return Response({"include_chips": [], "ignore_chips": []})
+            return Response({
+                "include_chips": [],
+                "ignore_chips": [],
+                "include_tag_chips": [],
+                "ignore_tag_chips": []
+            })
 
 
     def post(self, request, format=None):
@@ -28,6 +33,8 @@ class ProfileDetail(generics.GenericAPIView):
         else:
             profile.include_chips = request.data['includeChips']
             profile.ignore_chips = request.data['ignoreChips']
+            profile.include_tag_chips = request.data['includeTagChips']
+            profile.ignore_tag_chips = request.data['ignoreTagChips']
             profile.save()
 
         return Response(ProfileSerializer(profile).data)

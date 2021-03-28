@@ -272,7 +272,9 @@ export default {
       try {
         await this.$auth.axios({ url: '/profile/', data: {
           includeChips: this.includeChips,
-          ignoreChips: this.ignoreChips
+          ignoreChips: this.ignoreChips,
+          includeTagChips: this.includeTagChips,
+          ignoreTagChips: this.ignoreTagChips,
         }, method: 'POST' })
         this.$q.notify({ message: "Filters saved" });
       }
@@ -289,6 +291,8 @@ export default {
         const response = await this.$auth.axios({ url: '/profile/', method: 'GET' })
         this.includeChips = response.data.include_chips
         this.ignoreChips = response.data.ignore_chips
+        this.includeTagChips = response.data.include_tag_chips
+        this.ignoreTagChips = response.data.ignore_tag_chips
       }
       catch {
         console.log('There was a problem retrieving the saved filters. Are you logged in?')
