@@ -68,10 +68,8 @@ test: env-dev build-python
 
 test-in-docker: env-dev build-python
 	$(IN_ENV) && export DJANGO_SETTINGS_MODULE=api.config.settings && \
-	             export SQL_HOST=postgres && \
-				 export SQL_USER=postgres && \
-				 export SQL_PASSWORD=postgres && \
-				 $(PYTHON) -m pytest api/tests/
+	             export SQL_HOST=postgres && export SQL_USER=postgres && \
+				 export SQL_PASSWORD=postgres && $(PYTHON) -m pytest api/tests/
 
 encrypt-dotenv:
 	tar -c env/ | gpg --symmetric -c -o env.tar.gpg
