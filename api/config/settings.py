@@ -144,8 +144,8 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=100),
     'SIGNING_KEY': SECRET_KEY # It's a good idea to change this to something unique.
 }
 
