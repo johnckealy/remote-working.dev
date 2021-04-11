@@ -203,12 +203,12 @@ export default {
       });
       this.includeTagChips.forEach((chip) => {
         this.filteredJobs = this.filteredJobs.filter((job) => {
-          return job.tags.includes(chip.toLowerCase());
+          return job.tags.includes(chip);
         });
       });
       this.ignoreTagChips.forEach((chip) => {
         this.filteredJobs = this.filteredJobs.filter((job) => {
-          return !job.tags.includes(chip.toLowerCase());
+          return !job.tags.includes(chip);
         });
       });
       this.totalFilteredJobs =  this.filteredJobs.length
