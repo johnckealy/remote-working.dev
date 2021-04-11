@@ -2,7 +2,9 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from dateutil.parser import parse
+from datetime import datetime
 from jobs.models import Job
+from dateutil.tz import tzlocal
 
 
 def grow_remote():
@@ -59,6 +61,41 @@ def remoteok():
         )
 
 
+def weworkremotely():
+    page = requests.get('https://weworkremotely.com/categories/remote-programming-jobs')
+    soup = BeautifulSoup(page.content, 'html.parser')
+    lis = soup.find_all("li", {"class": "feature"})
+    for li in lis:
+        try:
+            timetag = li.findChild("time", recursive=True)
+            if timetag:
+                date = parse(timetag.get('datetime'))
+            else:
+                date = datetime.now(tzlocal())
+            region_tags = li.find("span", {"class": "region"})
+            if region_tags:
+                tags = region_tags.text.split('/')
+            else:
+                tags = []
+            company = li.find("span", {"class": "company"}).text
+            role = li.find("span", {"class": "title"}).text
+            Job.objects.create(
+                direct_link = f"https://weworkremotely.com{li.find_all('a')[1].get('href')}",
+                jobsite_link = 'https://weworkremotely.com/categories/remote-programming-jobs',
+                jobsite = 'weworkremotely.com',
+                tags = tags,
+                date = date,
+                company = company,
+                role = role
+            )
+        except:
+            pass
+
+    return
+
+
+
 def scraper():
+    weworkremotely()
     grow_remote()
     remoteok()
